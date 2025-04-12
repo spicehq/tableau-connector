@@ -31,7 +31,6 @@ jobs:
           echo "Packaged TACO file: $TACO_FILE" && \
           cp "$TACO_FILE" ../../spice.taco && \
           echo "📦 TACO package is ready: ./spice.taco"
-        shell: bash
 
       - name: Set up Java for signing
         uses: actions/setup-java@v4
@@ -44,7 +43,6 @@ jobs:
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
         run: |
           jarsigner -tsa http://timestamp.digicert.com -verbose -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg pkcs11properties.cfg -sigalg SHA256withRSA -signedjar ${{ inputs.signed_binary_name}} spice.taco $DIGICERT_KEY_ALIAS
-        shell: bash
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
