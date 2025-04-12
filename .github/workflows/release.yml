@@ -19,14 +19,21 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.13
-
-      - name: Make Package (unsigned)
+      - name: Package Connector
         run: |
-          make package
+          echo "⚡ Packaging connector..."
+          cd ./connector-packager && \
+          python3 -m venv .venv && \
+          . .venv/bin/activate && \
+          python3 -m pip install --quiet --upgrade pip setuptools wheel && \
+          pip install --quiet . && \
+          echo "Running connector packager..." && \
+          python3 -m connector_packager.package ../../spice_jdbc > /dev/null && \
+          TACO_FILE=$(find . -name 'spice*.taco' | head -n 1) && \
+          echo "Packaged TACO file: $TACO_FILE" && \
+          cp "$TACO_FILE" ../../spice.taco && \
+          echo "📦 TACO package is ready: ./spice.taco"
+        shell: bash
 
       - name: Set up Java for signing
         uses: actions/setup-java@v4
