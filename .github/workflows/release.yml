@@ -21,16 +21,17 @@ jobs:
 
       - name: Package Connector
         run: |
-          python3 -m venv .venv && \
-          . .venv/bin/activate && \
-          python3 -m pip install --quiet --upgrade pip setuptools wheel && \
+          python -m venv .venv && \
+          .venv\\Scripts\\activate && \
+          python -m pip install --quiet --upgrade pip setuptools wheel && \
           pip install --quiet . && \
           echo "Running connector packager..." && \
-          python3 -m connector_packager.package ../../spice_jdbc > /dev/null && \
-          TACO_FILE=$(find . -name 'spice*.taco' | head -n 1) && \
-          echo "Packaged TACO file: $TACO_FILE" && \
-          cp "$TACO_FILE" ../../spice.taco && \
+          python -m connector_packager.package ../../spice_jdbc > NUL && \
+          TACO_FILE=$(for /f "delims=" %i in ('dir /b /s spice*.taco') do @echo %i) && \
+          echo "Packaged TACO file: %TACO_FILE%" && \
+          copy "%TACO_FILE%" ../../spice.taco && \
           echo "📦 TACO package is ready: ./spice.taco"
+        shell: cmd
 
       - name: Set up Java for signing
         uses: actions/setup-java@v4
@@ -42,7 +43,7 @@ jobs:
         env:
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
         run: |
-          jarsigner -tsa http://timestamp.digicert.com -verbose -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg pkcs11properties.cfg -sigalg SHA256withRSA -signedjar ${{ inputs.signed_binary_name}} spice.taco $DIGICERT_KEY_ALIAS
+          jarsigner -tsa http://timestamp.digicert.com -verbose -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg pkcs11properties.cfg -sigalg SHA256withRSA -signedjar ${{ inputs.signed_binary_name}} spice.taco %DIGICERT_KEY_ALIAS%
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
