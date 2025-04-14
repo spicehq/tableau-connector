@@ -47,16 +47,17 @@ jobs:
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
           DIGICERT_TOKEN_CFG_PATH: ${{ secrets.DIGICERT_TOKEN_CFG_PATH }}
         run: |
-          echo "$DIGICERT_TOKEN_PASSWORD" | jarsigner -verbose `
+          echo "$Env:DIGICERT_TOKEN_PASSWORD" | jarsigner -verbose `
             -tsa http://timestamp.digicert.com `
             -keystore NONE  `
             -storetype PKCS11 `
             -providerClass sun.security.pkcs11.SunPKCS11 `
-            -providerArg "C:\Users\lukek\spice.ai\taco\pkcs11properties.cfg" `
+            -providerArg "C:\\Users\\lukek\\spice.ai\\taco\\pkcs11properties.cfg" `
             -sigalg SHA256withRSA `
             -signedjar ${{ inputs.signed_binary_name}} `
             spice.taco `
-            "$DIGICERT_KEY_ALIAS"
+            "Spice, Inc."
+        shell: pwsh
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
