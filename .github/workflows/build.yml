@@ -24,3 +24,9 @@ jobs:
       - name: Make Package
         run: |
           make package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spice.unsigned.taco
+          path: spice.taco

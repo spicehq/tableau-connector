@@ -2,6 +2,10 @@ name: release
 on:
   workflow_dispatch:
     inputs:
+      workflow_run_id:
+        description: 'ID of the workflow run to fetch artifacts from'
+        required: true
+        type: string
       signed_binary_name:
         description: 'Name of the signed binary'
         required: false
@@ -19,19 +23,17 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Package Connector
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spice.unsigned.taco
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.workflow_run_id }}
+
+      - name: Copy unsigned taco
         run: |
-          python -m venv .venv && \
-          .venv\\Scripts\\activate && \
-          python -m pip install --quiet --upgrade pip setuptools wheel && \
-          pip install --quiet . && \
-          echo "Running connector packager..." && \
-          python -m connector_packager.package ../../spice_jdbc > NUL && \
-          TACO_FILE=$(for /f "delims=" %i in ('dir /b /s spice*.taco') do @echo %i) && \
-          echo "Packaged TACO file: %TACO_FILE%" && \
-          copy "%TACO_FILE%" ../../spice.taco && \
-          echo "📦 TACO package is ready: ./spice.taco"
-        shell: cmd
+          cp spice.taco ${{ inputs.signed_binary_name }}
+          echo "Signed binary name: ${{ inputs.signed_binary_name }}"
 
       - name: Set up Java for signing
         uses: actions/setup-java@v4
@@ -41,9 +43,20 @@ jobs:
 
       - name: Sign ${{ inputs.signed_binary_name}}
         env:
+          DIGICERT_TOKEN_PASSWORD: ${{ secrets.DIGICERT_TOKEN_PASSWORD }}
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
+          DIGICERT_TOKEN_CFG_PATH: ${{ secrets.DIGICERT_TOKEN_CFG_PATH }}
         run: |
-          jarsigner -tsa http://timestamp.digicert.com -verbose -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg pkcs11properties.cfg -sigalg SHA256withRSA -signedjar ${{ inputs.signed_binary_name}} spice.taco %DIGICERT_KEY_ALIAS%
+          echo "$DIGICERT_TOKEN_PASSWORD" | jarsigner -verbose `
+            -tsa http://timestamp.digicert.com `
+            -keystore NONE  `
+            -storetype PKCS11 `
+            -providerClass sun.security.pkcs11.SunPKCS11 `
+            -providerArg "$DIGICERT_TOKEN_CFG_PATH" `
+            -sigalg SHA256withRSA `
+            -signedjar ${{ inputs.signed_binary_name}} `
+            spice.taco `
+            "$DIGICERT_KEY_ALIAS"
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
