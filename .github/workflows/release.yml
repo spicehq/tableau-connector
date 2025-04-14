@@ -35,11 +35,11 @@ jobs:
           cp spice.taco ${{ inputs.signed_binary_name }}
           echo "Signed binary name: ${{ inputs.signed_binary_name }}"
 
-      - name: Set up Java for signing
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'zulu'
+      # - name: Set up Java for signing
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     java-version: '11'
+      #     distribution: 'zulu'
 
       - name: Sign ${{ inputs.signed_binary_name}}
         env:
@@ -52,7 +52,7 @@ jobs:
             -keystore NONE  `
             -storetype PKCS11 `
             -providerClass sun.security.pkcs11.SunPKCS11 `
-            -providerArg "$DIGICERT_TOKEN_CFG_PATH" `
+            -providerArg "C:\Users\lukek\spice.ai\taco\pkcs11properties.cfg" `
             -sigalg SHA256withRSA `
             -signedjar ${{ inputs.signed_binary_name}} `
             spice.taco `
