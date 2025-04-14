@@ -41,23 +41,24 @@ jobs:
       #     java-version: '11'
       #     distribution: 'zulu'
 
-      - name: Sign ${{ inputs.signed_binary_name}}
+      - name: Sign ${{ inputs.signed_binary_name }}
+        shell: cmd
         env:
           DIGICERT_TOKEN_PASSWORD: ${{ secrets.DIGICERT_TOKEN_PASSWORD }}
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
           DIGICERT_TOKEN_CFG_PATH: ${{ secrets.DIGICERT_TOKEN_CFG_PATH }}
         run: |
-          echo "$Env:DIGICERT_TOKEN_PASSWORD" | jarsigner -verbose `
-            -tsa http://timestamp.digicert.com `
-            -keystore NONE  `
-            -storetype PKCS11 `
-            -providerClass sun.security.pkcs11.SunPKCS11 `
-            -providerArg "C:\\Users\\lukek\\spice.ai\\taco\\pkcs11properties.cfg" `
-            -sigalg SHA256withRSA `
-            -signedjar ${{ inputs.signed_binary_name}} `
-            spice.taco `
-            "Spice, Inc."
-        shell: pwsh
+          jarsigner -verbose ^
+            -tsa http://timestamp.digicert.com ^
+            -keystore NONE ^
+            -storetype PKCS11 ^
+            -storepass %DIGICERT_TOKEN_PASSWORD% ^
+            -providerClass sun.security.pkcs11.SunPKCS11 ^
+            -providerArg "%DIGICERT_TOKEN_CFG_PATH%" ^
+            -sigalg SHA256withRSA ^
+            -signedjar %SIGNED_BINARY_NAME% ^
+            spice.taco ^
+            "%DIGICERT_KEY_ALIAS%"
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
