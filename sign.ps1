@@ -1,3 +1,4 @@
+echo $env:DIGICERT_TOKEN_CFG_PATH
 echo $env:DIGICERT_TOKEN_PASSWORD | jarsigner -verbose `
     -tsa http://timestamp.digicert.com `
     -keystore NONE `
