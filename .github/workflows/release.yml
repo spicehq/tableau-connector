@@ -42,13 +42,16 @@ jobs:
       #     distribution: 'zulu'
 
       - name: Sign ${{ inputs.signed_binary_name }}
-        shell: cmd
+        shell: powershell
         env:
           DIGICERT_TOKEN_PASSWORD: ${{ secrets.DIGICERT_TOKEN_PASSWORD }}
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
           DIGICERT_TOKEN_CFG_PATH: ${{ secrets.DIGICERT_TOKEN_CFG_PATH }}
         run: |
-          echo %DIGICERT_TOKEN_CFG_PATH% && PowerShell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process; .\sign.ps1"
+          echo $env:DIGICERT_TOKEN_CFG_PATH
+          echo "$DIGICERT_TOKEN_CFG_PATH"
+
+          #echo %DIGICERT_TOKEN_CFG_PATH% && PowerShell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process; .\sign.ps1"
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
