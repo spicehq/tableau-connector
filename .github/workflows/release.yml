@@ -36,11 +36,11 @@ jobs:
           cp spice.taco ${{ inputs.signed_binary_name }}
           echo "Signed binary name: ${{ inputs.signed_binary_name }}"
 
-      - name: Set up Java for signing
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'zulu'
+      # - name: Set up Java for signing
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     java-version: '11'
+      #     distribution: 'zulu'
 
       - name: Sign ${{ inputs.signed_binary_name }}
         shell: powershell
