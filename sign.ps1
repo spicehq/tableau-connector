@@ -19,10 +19,9 @@ if (-not $env:SIGNED_BINARY_NAME) {
 }
 
 echo $env:DIGICERT_TOKEN_PASSWORD | jarsigner -verbose `
-    -tsa http://timestamp.digicert.com `
+    -tsa https://timestamp.digicert.com `
     -keystore NONE `
     -storetype PKCS11 `
-    -storepass $env:DIGICERT_TOKEN_PASSWORD `
     -providerClass sun.security.pkcs11.SunPKCS11 `
     -providerArg "$env:DIGICERT_TOKEN_CFG_PATH" `
     -sigalg SHA256withRSA `
