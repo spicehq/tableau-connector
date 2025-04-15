@@ -35,18 +35,18 @@ curl -L https://repo1.maven.org/maven2/org/apache/arrow/flight-sql-jdbc-driver/1
 
 #### Tableau Server
 
-1. Download the latest `spice.taco` file from the [releases page](https://github.com/spiceai/tableau-connector/releases)
+1. Download the latest `spiceai.taco` file from [Releases](https://github.com/spicehq/tableau-connector/releases)
 2. Copy to your Tableau connectors directory:
    - Windows: `C:\Program Files\Tableau\Connectors`
 
       ```powershell
-      Invoke-WebRequest -Uri "https://github.com/spiceai/tableau-connector/releases/latest/download/spice.taco" -OutFile "C:\Program Files\Tableau\Connectors\spice.taco"
+      Invoke-WebRequest -Uri "https://github.com/spicehq/tableau-connector/releases/latest/download/spiceai.taco" -OutFile "C:\Program Files\Tableau\Connectors\spiceai.taco"
       ```
 
    - Linux: `/opt/tableau/connectors`
 
       ```bash
-      curl -L https://github.com/spiceai/tableau-connector/releases/latest/download/spice.taco -o /opt/tableau/connectors/spice.taco
+      curl -L https://github.com/spicehq/tableau-connector/releases/latest/download/spiceai.taco -o /opt/tableau/connectors/spiceai.taco
       ```
 
 3. Restart server: `tsm restart`
@@ -58,19 +58,19 @@ curl -L https://repo1.maven.org/maven2/org/apache/arrow/flight-sql-jdbc-driver/1
    - Windows: `C:\Users\[USERNAME]\Documents\My Tableau Repository\Connectors`
 
       ```powershell
-      Invoke-WebRequest -Uri "https://github.com/spiceai/tableau-connector/releases/latest/download/spice.taco" -OutFile "C:\Users\[USERNAME]\Documents\My Tableau Repository\Connectors\spice.taco"
+      Invoke-WebRequest -Uri "https://github.com/spicehq/tableau-connector/releases/latest/download/spiceai.taco" -OutFile "C:\Users\[USERNAME]\Documents\My Tableau Repository\Connectors\spiceai.taco"
       ```
 
    - macOS: `~/Documents/My Tableau Repository/Connectors`
 
       ```bash
-      curl -L https://github.com/spiceai/tableau-connector/releases/latest/download/spice.taco -o ~/Documents/My\ Tableau\ Repository/Connectors/spice.taco
+      curl -L https://github.com/spicehq/tableau-connector/releases/latest/download/spiceai.taco -o ~/Documents/My\ Tableau\ Repository/Connectors/spiceai.taco
       ```
 
    - Linux: `/opt/tableau/connectors`
 
       ```bash
-      curl -L https://github.com/spiceai/tableau-connector/releases/latest/download/spice.taco -o /opt/tableau/connectors/spice.taco
+      curl -L https://github.com/spicehq/tableau-connector/releases/latest/download/spiceai.taco -o /opt/tableau/connectors/spiceai.taco
       ```
 
 ## Limitations
