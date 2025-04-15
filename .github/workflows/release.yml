@@ -48,7 +48,7 @@ jobs:
           DIGICERT_TOKEN_PASSWORD: ${{ secrets.DIGICERT_TOKEN_PASSWORD }}
           DIGICERT_KEY_ALIAS: ${{ secrets.DIGICERT_KEY_ALIAS }}
           DIGICERT_TOKEN_CFG_PATH: ${{ secrets.DIGICERT_TOKEN_CFG_PATH }}
-        run: .\sign.ps1"
+        run: &.\sign.ps1
 
       - name: Upload ${{ inputs.signed_binary_name }}
         uses: actions/upload-artifact@v4
