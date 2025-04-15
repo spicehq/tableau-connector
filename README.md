@@ -35,7 +35,7 @@ curl -L https://repo1.maven.org/maven2/org/apache/arrow/flight-sql-jdbc-driver/1
 
 #### Tableau Server
 
-1. Download the latest `spiceai.taco` file from the [releases page](https://github.com/spicehq/tableau-connector/releases)
+1. Download the latest `spiceai.taco` file from [Releases](https://github.com/spicehq/tableau-connector/releases)
 2. Copy to your Tableau connectors directory:
    - Windows: `C:\Program Files\Tableau\Connectors`
 
