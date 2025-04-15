@@ -19,7 +19,7 @@ if (-not $env:SIGNED_BINARY_NAME) {
 }
 
 jarsigner -verbose `
-    -tsa https://timestamp.digicert.com `
+    -tsa http://timestamp.digicert.com `
     -keystore NONE `
     -storetype PKCS11 `
     -storepass $env:DIGICERT_TOKEN_PASSWORD `
