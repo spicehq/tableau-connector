@@ -18,10 +18,11 @@ if (-not $env:SIGNED_BINARY_NAME) {
     exit 1
 }
 
-echo $env:DIGICERT_TOKEN_PASSWORD | jarsigner -verbose `
+jarsigner -verbose `
     -tsa https://timestamp.digicert.com `
     -keystore NONE `
     -storetype PKCS11 `
+    -storepass $env:DIGICERT_TOKEN_PASSWORD `
     -providerClass sun.security.pkcs11.SunPKCS11 `
     -providerArg "$env:DIGICERT_TOKEN_CFG_PATH" `
     -sigalg SHA256withRSA `
